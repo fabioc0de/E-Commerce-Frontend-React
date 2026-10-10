@@ -1,6 +1,6 @@
 # TechShop Frontend
 
-**TechShop Frontend is a single-page e-commerce application built with React, Vite, and Tailwind CSS. The application supports a product catalog, a global shopping cart, client-side routing, and a responsive user interface.**
+**TechShop Frontend is an e-commerce simple project application built with React, Vite, and Tailwind CSS. The application supports a product catalog, a global shopping cart, client-side routing, and a responsive user interface.**
 
 ## Prerequisites
 Node.js 18+
