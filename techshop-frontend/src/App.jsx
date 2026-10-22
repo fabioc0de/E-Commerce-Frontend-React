@@ -3,9 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Productos from './pages/Productos';
-import Car from './pages/Car';
+import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
-import { CartProvider } from './components/products/CartContext';
+import { CartProvider } from './features/cart/CartContext';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         
         {/* Rutas adicionales */}
         <Route path="productos" element={<Productos />} />
-        <Route path="carrito" element={<Car />} />
+        <Route path="carrito" element={<Cart />} />
         
         {/* Ruta de error 404 */}
         <Route path="*" element={<NotFound />} />

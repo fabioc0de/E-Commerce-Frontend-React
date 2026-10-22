@@ -1,0 +1,193 @@
+RESUMEN DEL PROYECTO TECHSHOP - HISTORIAL DE DESARROLLO
+
+1. CONTEXTO GENERAL
+- Proyecto frontend en React + Vite + TypeScript.
+- La app es un ecommerce de productos y carrito.
+- El proyecto tiene una estructura base en src/ con carpetas como pages, components, features, hooks, services, types, utils.
+- No es necesario crear un entorno virtual de Python para este frontend.
+- Para frontend, lo correcto es trabajar con Node.js, npm/yarn/pnpm y dependencias por proyecto.
+
+2. ENTORNO Y EJECUCION
+- Lo normal en frontend es instalar dependencias con:
+  npm install
+- Ejecutar la app con:
+  npm run dev
+- El frontend normalmente corre en puerto 5173 (Vite).
+- El backend normalmente corre en otro puerto, por ejemplo 5000 o 3000.
+- Una URL como http://localhost:5000/api suele apuntar a un backend REST.
+
+3. ESTRUCTURA DE AUTENTICACION
+- El archivo src/types/auth.ts es una base útil, pero no representa toda la autenticacion final.
+- El modelo de login debe separarse en capas:
+  - tipos: src/types/auth.ts
+  - servicio API: src/services/authService.ts
+  - estado global: src/context/AuthContext.tsx o src/features/auth/AuthContext.tsx
+  - formulario: src/features/auth/LoginForm.tsx
+  - guard de rutas: src/features/auth/ProtectedRoute.tsx
+
+- Estructura recomendada para auth:
+  export type UserRole = "admin" | "customer";
+
+  export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+  }
+
+  export interface LoginCredentials {
+    email: string;
+    password: string;
+  }
+
+  export interface AuthResponse {
+    token: string;
+    user: User;
+  }
+
+  export interface AuthState {
+    user: User | null;
+    token: string | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+  }
+
+- La diferencia importante es:
+  - LoginFormState = estado del formulario visual
+  - LoginCredentials = payload que se envía al backend
+  - User = modelo del usuario autenticado
+  - AuthState = estado global de sesión
+
+4. LOGICA DE LOGIN
+- La lógica de llamado a la API no va dentro del componente ni dentro de src/types.
+- Debe ir en un servicio:
+  src/services/authService.ts
+- Ejemplo conceptual:
+  const API_URL = "http://localhost:5000/api";
+
+  export async function loginUser(credentials: LoginCredentials): Promise<AuthResponse> {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message ?? "Error al iniciar sesión");
+    }
+
+    return response.json();
+  }
+
+- Ese servicio luego es consumido por AuthContext o useAuth.
+
+5. ORGANIZACION DEL PROYECTO
+- La estructura actual es buena para arrancar, pero debe quedar mas ordenada por dominio funcional.
+- Recomendacion final:
+
+  src/
+    assets/
+    components/
+      layout/
+      ui/
+    features/
+      auth/
+      cart/
+      products/
+    hooks/
+    pages/
+    services/
+    types/
+    utils/
+
+- A nivel conceptual:
+  - pages = vistas / rutas
+  - features = dominio funcional
+  - components = bloques UI reutilizables
+  - services = llamadas HTTP
+  - hooks = logica reutilizable
+  - types = interfaces y tipos TS
+  - utils = helpers simples
+
+6. CARRO DE COMPRA: "CAR" VS "CART"
+- En ecommerce, lo correcto es usar CART.
+- Car significa auto/coche en ingles.
+- Cart significa carrito de compra.
+- Por eso es mejor usar:
+  - CartPage
+  - CartContext
+  - useCart
+  - CartItem
+- Un nombre como Car.jsx es poco natural para un ecommerce.
+
+7. FEATURES: ORGANIZACION POR MODULO
+- La ruta con / en una estructura de carpetas es normal y representa jerarquia.
+- Ejemplo:
+  src/features/auth
+  src/features/cart
+  src/features/products
+- Eso es una buena práctica para proyectos que crecen.
+
+8. UTILS, LIB Y SERVICES
+- utils = funciones pequeñas de ayuda para frontend
+  ejemplos:
+  - formatPrice
+  - formatDate
+  - validateEmail
+  - calculateTotal
+
+- services = llamadas al backend, fetch o axios
+  ejemplos:
+  - authService
+  - productService
+  - cartService
+
+- lib = infraestructura o capas de integracion, no logica de negocio de pantalla
+  ejemplos:
+  - api.ts
+  - storage.ts
+  - authStorage.ts
+
+- Importante: funciones como formatear precio o sumar totales del carrito pueden hacerlas el frontend si son solo para UI y no reglas criticas del negocio.
+- Las reglas de negocio reales deben estar o venir del backend.
+
+9. FORMATOS Y ESTILO
+- En React/TypeScript lo comun es usar 2 espacios y Prettier.
+- No es tanto tabs vs spaces, sino consistencia.
+- La regla mas importante es tener un formatter configurado y usarlo siempre.
+
+10. RECOMENDACIONES PROFESIONALES PARA ESTE PROYECTO
+- Mantener carpetas por dominio funcional.
+- Evitar mezclar logica de negocio, API y UI en un mismo archivo.
+- No meter fetch dentro de componentes.
+- Separar tipos de servicios y de estado global.
+- Usar nombres ingleses claros para ecommerce: cart, product, auth, checkout.
+- Usar pages para pantallas y components para piezas visuales reutilizables.
+
+11. DECISION FINAL SOBRE ESTRUCTURA
+- La estructura actual ya tiene buena base.
+- La recomendacion final es pulirla con estas reglas:
+  - src/pages => pantallas
+  - src/features => funcionalidad por dominio
+  - src/components => componentes visuales
+  - src/services => comunicacion con backend
+  - src/types => modelos TS
+  - src/utils => helpers
+  - src/hooks => hooks reutilizables
+
+12. CONCLUSION
+- No es necesario usar entorno virtual de Python para este frontend.
+- La autenticacion debe estar separada en tipos, servicios y estado global.
+- El carrito real debe llamarse cart, no car.
+- La estructura por folder/domain es la mejor opcion para un ecommerce profesional.
+- El frontend puede calcular valores visuales, pero el backend mantiene la verdad del negocio.
+
+RESUMEN BREVE PARA NUEVAS SESIONES:
+- Proyecto hecho en React + Vite + TypeScript.
+- En frontend no se usa venv, sino Node/npm.
+- Doble enfoque: frontend presenta y backend valida datos.
+- Auth estaba bien parcialmente estructurado, pero faltan capas y separacion de responsabilidades.
+- La API de login apunta a backend (ej: http://localhost:5000/api).
+- El carrito se debe llamar cart, no car.
+- La estructura debe ser por features y servicios para mantener escalabilidad.

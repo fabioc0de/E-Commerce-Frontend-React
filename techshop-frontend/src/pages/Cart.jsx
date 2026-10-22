@@ -1,6 +1,6 @@
-import { useCart } from '../components/products/CartContext';
+import { useCart } from '../features/cart/CartContext';
 
-export default function Car() {
+export default function Cart() {
   const { cart, dispatch } = useCart();
   const items = cart.items;
   const total = items.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
