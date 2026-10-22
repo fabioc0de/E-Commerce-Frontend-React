@@ -1,6 +1,6 @@
 // src/components/products/ProductCard.jsx
 import { useState } from 'react';
-import { useCart } from './CartContext';
+import { useCart } from '../cart/CartContext';
 
 export default function ProductCard({ product, api }) {
   const [added, setAdded] = useState(false);

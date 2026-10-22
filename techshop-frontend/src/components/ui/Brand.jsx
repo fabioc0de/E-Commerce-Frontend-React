@@ -9,8 +9,8 @@ export default function Brand() {
         to="/" 
         className="flex items-center no-underline text-white text-[1.1rem] hover:opacity-90 transition-opacity"
       >
-        <img src={logo} alt="Logo" className="max-w-[32px] rounded-[10px]" />
-        <span className="ml-[10px] pb-0 font-bold text-lg">TechShop</span>
+        <img src={logo} alt="Logo" className="max-w-8 rounded-[10px]" />
+        <span className="ml-2.5 pb-0 font-bold text-lg">TechShop</span>
       </Link>
     </div>
   );
