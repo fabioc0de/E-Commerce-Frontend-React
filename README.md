@@ -19,20 +19,6 @@ cd E-Commerce-Frontend-React/techshop-frontend
 ```bash
 npm install
 ```
-### Step 3: Verify the project structure
-**Make sure the following key files are present in the `src/` directory:**
-
-```text
-src/
-├── components/
-│   ├── layout/        # Header, Footer, Hero, Layout
-│   ├── products/      # ProductCard, CartContext
-│   └── ui/            # Brand, NavBar, SearchBar
-├── pages/             # Home, Productos, Car, NotFound
-├── App.jsx
-└── main.jsx
-```
-
 ### Run the project
 **Start the development server:**
 
