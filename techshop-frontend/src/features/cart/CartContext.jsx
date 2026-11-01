@@ -48,7 +48,7 @@ function cartReducer(state, action) {
       return {
         ...state,
         items: state.items.map(item =>
-          item.product.id === id ? { ...item, quantity } : item
+          item.product.id === id ? { ...item, nextQty } : item
         )
       };
     }
